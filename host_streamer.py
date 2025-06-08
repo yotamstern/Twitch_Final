@@ -43,47 +43,70 @@ _on_stream_end_callback = None
 _host_video_socket_ref = None
 _host_audio_socket_ref = None
 _end_stream_button_clicked = False
-
+_mic_muted = False # New global state for microphone mute
 
 def _host_preview_mouse_callback(event, x, y, flags, param):
-    """Handles mouse clicks on the 'End Stream' button in the preview."""
-    global _end_stream_button_clicked
-    button_rect = param
-    if event == cv2.EVENT_LBUTTONDOWN and button_rect:
-        x1, y1, x2, y2 = button_rect
-        if x1 <= x <= x2 and y1 <= y <= y2:
-            logging.info("'End Stream' button clicked in host preview.")
-            _end_stream_button_clicked = True
+    """Handles mouse clicks on the 'End Stream' and 'Mute' buttons in the preview."""
+    global _end_stream_button_clicked, _mic_muted
+    end_btn_rect, mute_btn_rect = param
 
+    if event == cv2.EVENT_LBUTTONDOWN:
+        # Check End Stream button
+        if end_btn_rect:
+            x1, y1, x2, y2 = end_btn_rect
+            if x1 <= x <= x2 and y1 <= y <= y2:
+                logging.info("'End Stream' button clicked in host preview.")
+                _end_stream_button_clicked = True
+                return # Consume event
 
-def _draw_end_stream_button(frame):
-    """Draws a clickable 'End Stream' button on the frame."""
-    btn_text = "End Stream"
+        # Check Mute/Unmute button
+        if mute_btn_rect:
+            x1, y1, x2, y2 = mute_btn_rect
+            if x1 <= x <= x2 and y1 <= y <= y2:
+                _mic_muted = not _mic_muted
+                logging.info(f"Microphone toggled: {'Muted' if _mic_muted else 'Unmuted'}")
+                # No return here, allow other buttons to be checked if needed later
+
+def _draw_control_buttons(frame):
+    """Draws clickable 'End Stream' and 'Mute/Unmute' buttons on the frame."""
     font = cv2.FONT_HERSHEY_SIMPLEX
     scale = 0.6
     thick = 1
     pad = 12
-    bg_color = (30, 30, 200)
     text_color = (255, 255, 255)
-
-    (text_w, text_h), _ = cv2.getTextSize(btn_text, font, scale, thick)
     disp_h, disp_w = frame.shape[:2]
-    btn_w = text_w + 2 * pad
-    btn_h = text_h + 2 * pad
 
-    x1 = disp_w - btn_w - pad
-    y1 = pad
-    x2 = disp_w - pad
-    y2 = y1 + btn_h
+    buttons_info = [
+        {"text": "End Stream", "bg_color": (30, 30, 200)},
+        {"text": "Mute" if not _mic_muted else "Unmute", "bg_color": (200, 30, 30) if _mic_muted else (30, 150, 30)},
+    ]
 
-    cv2.rectangle(frame, (x1, y1), (x2, y2), bg_color, -1)
-    cv2.rectangle(frame, (x1, y1), (x2, y2), (200, 200, 200), 1)
-    text_x = x1 + (btn_w - text_w) // 2
-    text_y = y1 + (btn_h + text_h) // 2
-    cv2.putText(frame, btn_text, (text_x, text_y), font, scale, text_color,
-                thick, cv2.LINE_AA)
-    return x1, y1, x2, y2
+    button_rects = []
+    current_x = disp_w - pad
+    for btn in reversed(buttons_info): # Draw from right to left
+        btn_text = btn["text"]
+        bg_color = btn["bg_color"]
 
+        (text_w, text_h), _ = cv2.getTextSize(btn_text, font, scale, thick)
+        btn_w = text_w + 2 * pad
+        btn_h = text_h + 2 * pad
+
+        x2 = current_x
+        x1 = current_x - btn_w
+        y1 = pad
+        y2 = y1 + btn_h
+
+        cv2.rectangle(frame, (x1, y1), (x2, y2), bg_color, -1)
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (200, 200, 200), 1)
+        text_x = x1 + (btn_w - text_w) // 2
+        text_y = y1 + (btn_h + text_h) // 2
+        cv2.putText(frame, btn_text, (text_x, text_y), font, scale, text_color,
+                    thick, cv2.LINE_AA)
+
+        button_rects.insert(0, (x1, y1, x2, y2)) # Add to the beginning to maintain order
+        current_x = x1 - pad # Move left for the next button
+
+    return button_rects
 
 def send_video(video_socket):
     """Captures video, shows a preview, and sends it to the server."""
@@ -99,9 +122,30 @@ def send_video(video_socket):
             raise IOError("Cannot open camera for host.")
 
         cv2.namedWindow(preview_window_name, cv2.WINDOW_NORMAL)
-        button_rect = None
+
+        # --- Set larger window size and center it ---
+        # IMPORTANT: Replace these with your actual screen resolution
+        screen_w, screen_h = 1920, 1080  # Example: Full HD screen resolution
+        preview_w, preview_h = 1280, 720  # Desired preview window size (e.g., 16:9 aspect ratio)
+
+        cv2.resizeWindow(preview_window_name, preview_w, preview_h)
+
+        # Calculate position to center the window
+        x_pos = (screen_w - preview_w) // 2
+        y_pos = (screen_h - preview_h) // 2
+
+        # Adjust y_pos slightly up if you want it visually higher than dead center
+        # For example, to move it up by 10% of the screen height:
+        # y_pos = max(0, y_pos - int(screen_h * 0.10))
+
+        cv2.moveWindow(preview_window_name, x_pos, y_pos)
+        # --- End of window sizing and centering ---
+
+
+        # Initialize button_rects as a tuple of None for the mouse callback
+        button_rects = (None, None)
         cv2.setMouseCallback(preview_window_name, _host_preview_mouse_callback,
-                             param=button_rect)
+                             param=button_rects)
 
         last_frame_time = 0
         while streaming_active.is_set():
@@ -115,11 +159,11 @@ def send_video(video_socket):
                 logging.warning("Failed to grab frame from camera for host.")
                 continue
 
-            # --- Display Preview with Button ---
+            # --- Display Preview with Buttons ---
             display_frame = frame.copy()
-            button_rect = _draw_end_stream_button(display_frame)
+            button_rects = _draw_control_buttons(display_frame)
             cv2.setMouseCallback(preview_window_name,
-                                 _host_preview_mouse_callback, button_rect)
+                                 _host_preview_mouse_callback, tuple(button_rects))
             cv2.imshow(preview_window_name, display_frame)
 
             # --- Check for Exit Conditions ---
@@ -163,16 +207,22 @@ def send_audio(audio_socket):
         stream = audio.open(format=AUDIO_FORMAT, channels=CHANNELS, rate=RATE,
                             input=True, frames_per_buffer=CHUNK)
         while streaming_active.is_set():
-            try:
-                chunk = stream.read(CHUNK, exception_on_overflow=False)
-                packed_data = pickle.dumps((time.time(), chunk))
-                audio_socket.sendall(
-                    struct.pack("I", len(packed_data)) + packed_data)
-            except IOError as e:
-                if e.errno == pyaudio.paInputOverflowed:
-                    logging.warning("Audio input overflowed.")
-                else:
-                    raise
+            if _mic_muted:
+                # Send silence when muted
+                chunk = b'\x00' * CHUNK * 2 # 2 bytes per int16 sample
+            else:
+                try:
+                    chunk = stream.read(CHUNK, exception_on_overflow=False)
+                except IOError as e:
+                    if e.errno == pyaudio.paInputOverflowed:
+                        logging.warning("Audio input overflowed.")
+                        chunk = b'\x00' * CHUNK * 2 # Send silence on overflow
+                    else:
+                        raise
+
+            packed_data = pickle.dumps((time.time(), chunk))
+            audio_socket.sendall(
+                struct.pack("I", len(packed_data)) + packed_data)
     except Exception as e:
         logging.exception(f"Error in host send_audio thread: {e}")
     finally:
@@ -188,8 +238,9 @@ def send_audio(audio_socket):
 def launch_host_threads(host='127.0.0.1', video_port=12345, audio_port=12346,
                         master_tk_root=None, on_stream_end_callback=None):
     """Connects to server, sends HOST intent, and launches stream threads."""
-    global _on_stream_end_callback
+    global _on_stream_end_callback, _mic_muted
     _on_stream_end_callback = on_stream_end_callback
+    _mic_muted = False # Reset mute state on launch
 
     if not LIBS_AVAILABLE:
         return False, "Required libraries (cv2, pyaudio) missing.", None
