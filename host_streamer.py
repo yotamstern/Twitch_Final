@@ -43,32 +43,42 @@ _on_stream_end_callback = None
 _host_video_socket_ref = None
 _host_audio_socket_ref = None
 _end_stream_button_clicked = False
-_mic_muted = False # New global state for microphone mute
+_mic_muted = False
+_camera_blocked = False # New global state for camera block
 
 def _host_preview_mouse_callback(event, x, y, flags, param):
-    """Handles mouse clicks on the 'End Stream' and 'Mute' buttons in the preview."""
-    global _end_stream_button_clicked, _mic_muted
-    end_btn_rect, mute_btn_rect = param
+    """Handles mouse clicks on the 'End Stream', 'Mute', and 'Block Camera' buttons in the preview."""
+    global _end_stream_button_clicked, _mic_muted, _camera_blocked
+    # button_rects is now a list of tuples: [end_btn_rect, mute_btn_rect, camera_btn_rect]
+    button_rects = param
 
     if event == cv2.EVENT_LBUTTONDOWN:
-        # Check End Stream button
-        if end_btn_rect:
-            x1, y1, x2, y2 = end_btn_rect
+        # Check End Stream button (index 0)
+        if len(button_rects) > 0 and button_rects[0]:
+            x1, y1, x2, y2 = button_rects[0]
             if x1 <= x <= x2 and y1 <= y <= y2:
                 logging.info("'End Stream' button clicked in host preview.")
                 _end_stream_button_clicked = True
                 return # Consume event
 
-        # Check Mute/Unmute button
-        if mute_btn_rect:
-            x1, y1, x2, y2 = mute_btn_rect
+        # Check Mute/Unmute button (index 1)
+        if len(button_rects) > 1 and button_rects[1]:
+            x1, y1, x2, y2 = button_rects[1]
             if x1 <= x <= x2 and y1 <= y <= y2:
                 _mic_muted = not _mic_muted
                 logging.info(f"Microphone toggled: {'Muted' if _mic_muted else 'Unmuted'}")
-                # No return here, allow other buttons to be checked if needed later
+                # No return here, allow other buttons to be checked
+
+        # Check Block/Unblock Camera button (index 2)
+        if len(button_rects) > 2 and button_rects[2]:
+            x1, y1, x2, y2 = button_rects[2]
+            if x1 <= x <= x2 and y1 <= y <= y2:
+                _camera_blocked = not _camera_blocked
+                logging.info(f"Camera toggled: {'Blocked' if _camera_blocked else 'Unblocked'}")
+
 
 def _draw_control_buttons(frame):
-    """Draws clickable 'End Stream' and 'Mute/Unmute' buttons on the frame."""
+    """Draws clickable 'End Stream', 'Mute/Unmute', and 'Block/Unblock Camera' buttons on the frame."""
     font = cv2.FONT_HERSHEY_SIMPLEX
     scale = 0.6
     thick = 1
@@ -79,6 +89,7 @@ def _draw_control_buttons(frame):
     buttons_info = [
         {"text": "End Stream", "bg_color": (30, 30, 200)},
         {"text": "Mute" if not _mic_muted else "Unmute", "bg_color": (200, 30, 30) if _mic_muted else (30, 150, 30)},
+        {"text": "Block Cam" if not _camera_blocked else "Unblock Cam", "bg_color": (200, 100, 30) if _camera_blocked else (30, 30, 150)},
     ]
 
     button_rects = []
@@ -108,9 +119,10 @@ def _draw_control_buttons(frame):
 
     return button_rects
 
+
 def send_video(video_socket):
     """Captures video, shows a preview, and sends it to the server."""
-    global _host_video_socket_ref, _end_stream_button_clicked
+    global _host_video_socket_ref, _end_stream_button_clicked, _camera_blocked
     _end_stream_button_clicked = False
     _host_video_socket_ref = video_socket
     cap = None
@@ -119,31 +131,27 @@ def send_video(video_socket):
     try:
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
-            raise IOError("Cannot open camera for host.")
+            logging.error("Cannot open camera for host.")
+            # If camera cannot be opened, automatically block it and display message
+            _camera_blocked = True
+            # No need to raise error immediately, proceed to display blocked frame
 
         cv2.namedWindow(preview_window_name, cv2.WINDOW_NORMAL)
 
-        # --- Set larger window size and center it ---
-        # IMPORTANT: Replace these with your actual screen resolution
+        # IMPORTANT: Replace these with your actual screen resolution for centering
         screen_w, screen_h = 1920, 1080  # Example: Full HD screen resolution
         preview_w, preview_h = 1280, 720  # Desired preview window size (e.g., 16:9 aspect ratio)
 
         cv2.resizeWindow(preview_window_name, preview_w, preview_h)
 
-        # Calculate position to center the window
         x_pos = (screen_w - preview_w) // 2
         y_pos = (screen_h - preview_h) // 2
 
-        # Adjust y_pos slightly up if you want it visually higher than dead center
-        # For example, to move it up by 10% of the screen height:
-        # y_pos = max(0, y_pos - int(screen_h * 0.10))
-
         cv2.moveWindow(preview_window_name, x_pos, y_pos)
-        # --- End of window sizing and centering ---
 
-
-        # Initialize button_rects as a tuple of None for the mouse callback
-        button_rects = (None, None)
+        # Initialize button_rects as a list of None for the mouse callback
+        # [end_btn_rect, mute_btn_rect, camera_btn_rect]
+        button_rects = [None, None, None]
         cv2.setMouseCallback(preview_window_name, _host_preview_mouse_callback,
                              param=button_rects)
 
@@ -154,16 +162,39 @@ def send_video(video_socket):
                 time.sleep(time_to_wait)
             last_frame_time = time.time()
 
-            ret, frame = cap.read()
-            if not ret:
-                logging.warning("Failed to grab frame from camera for host.")
-                continue
+            frame = None
+            if _camera_blocked:
+                # Create a black frame and draw the "Host blocked his camera" message
+                frame = np.zeros((480, 640, 3), dtype=np.uint8) # Standard resolution for text frame
+                text = "Host blocked his camera"
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                font_scale = 1.5 # Made bigger
+                font_thickness = 3 # Made thicker
+                text_color = (255, 255, 255) # White color
+
+                # Get text size
+                (text_w, text_h), _ = cv2.getTextSize(text, font, font_scale, font_thickness)
+
+                # Calculate text position to center it
+                img_h, img_w = frame.shape[:2]
+                text_x = (img_w - text_w) // 2
+                text_y = (img_h + text_h) // 2
+
+                cv2.putText(frame, text, (text_x, text_y), font, font_scale, text_color,
+                            font_thickness, cv2.LINE_AA)
+            else:
+                ret, frame = cap.read()
+                if not ret:
+                    logging.warning("Failed to grab frame from camera for host. Blocking camera automatically.")
+                    _camera_blocked = True # Automatically block if camera fails
+                    continue # Skip current frame, next iteration will show blocked message
 
             # --- Display Preview with Buttons ---
             display_frame = frame.copy()
-            button_rects = _draw_control_buttons(display_frame)
+            # _draw_control_buttons now returns a list of rects in specific order
+            drawn_button_rects = _draw_control_buttons(display_frame)
             cv2.setMouseCallback(preview_window_name,
-                                 _host_preview_mouse_callback, tuple(button_rects))
+                                 _host_preview_mouse_callback, drawn_button_rects)
             cv2.imshow(preview_window_name, display_frame)
 
             # --- Check for Exit Conditions ---
@@ -175,13 +206,15 @@ def send_video(video_socket):
                 break
 
             # --- Prepare and Send Frame ---
-            ret_encode, buffer = cv2.imencode(
-                '.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])
-            if not ret_encode:
-                continue
-            data_to_send = pickle.dumps((time.time(), buffer))
-            video_socket.sendall(
-                struct.pack("I", len(data_to_send)) + data_to_send)
+            # Only send if frame is not None (i.e., successfully captured or generated blocked frame)
+            if frame is not None:
+                ret_encode, buffer = cv2.imencode(
+                    '.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])
+                if not ret_encode:
+                    continue
+                data_to_send = pickle.dumps((time.time(), buffer))
+                video_socket.sendall(
+                    struct.pack("I", len(data_to_send)) + data_to_send)
 
     except Exception as e:
         logging.exception(f"Error in host send_video thread: {e}")
@@ -207,40 +240,68 @@ def send_audio(audio_socket):
         stream = audio.open(format=AUDIO_FORMAT, channels=CHANNELS, rate=RATE,
                             input=True, frames_per_buffer=CHUNK)
         while streaming_active.is_set():
-            if _mic_muted:
-                # Send silence when muted
-                chunk = b'\x00' * CHUNK * 2 # 2 bytes per int16 sample
-            else:
-                try:
-                    chunk = stream.read(CHUNK, exception_on_overflow=False)
-                except IOError as e:
-                    if e.errno == pyaudio.paInputOverflowed:
-                        logging.warning("Audio input overflowed.")
-                        chunk = b'\x00' * CHUNK * 2 # Send silence on overflow
-                    else:
-                        raise
+            data_to_send = None
+            try:
+                # Always read from the stream to prevent buffer issues, but discard if muted
+                raw_audio_chunk = stream.read(CHUNK, exception_on_overflow=False)
 
-            packed_data = pickle.dumps((time.time(), chunk))
-            audio_socket.sendall(
-                struct.pack("I", len(packed_data)) + packed_data)
+                if _mic_muted:
+                    # Create an array of zeros (silence) matching the expected format
+                    # int16 means 2 bytes per sample
+                    silent_chunk = np.zeros(CHUNK, dtype=np.int16).tobytes()
+                    data_to_send = pickle.dumps((time.time(), silent_chunk))
+                else:
+                    data_to_send = pickle.dumps((time.time(), raw_audio_chunk))
+
+            except IOError as e:
+                if e.errno == pyaudio.paInputOverflowed:
+                    logging.warning("Audio input overflowed. Sending silence.")
+                    silent_chunk = np.zeros(CHUNK, dtype=np.int16).tobytes()
+                    data_to_send = pickle.dumps((time.time(), silent_chunk))
+                else:
+                    logging.exception(f"Unhandled IOError during audio capture: {e}")
+                    # If other IOErrors, send silence and try to recover or stop
+                    silent_chunk = np.zeros(CHUNK, dtype=np.int16).tobytes()
+                    data_to_send = pickle.dumps((time.time(), silent_chunk))
+                    # Optionally, break or raise here if the error is critical
+                    # streaming_active.clear()
+                    # break # Exit the loop on critical audio error
+
+            except Exception as e:
+                logging.exception(f"Unexpected error during audio capture: {e}")
+                silent_chunk = np.zeros(CHUNK, dtype=np.int16).tobytes()
+                data_to_send = pickle.dumps((time.time(), silent_chunk))
+                # streaming_active.clear()
+                # break # Exit the loop on critical audio error
+
+            if data_to_send:
+                audio_socket.sendall(
+                    struct.pack("I", len(data_to_send)) + data_to_send)
     except Exception as e:
-        logging.exception(f"Error in host send_audio thread: {e}")
+        logging.exception(f"Error in host send_audio thread initialization or main loop: {e}")
     finally:
         streaming_active.clear()
         if stream:
-            stream.stop_stream()
-            stream.close()
+            try:
+                stream.stop_stream()
+                stream.close()
+            except Exception as e:
+                logging.error(f"Error stopping/closing audio stream: {e}")
         if audio:
-            audio.terminate()
+            try:
+                audio.terminate()
+            except Exception as e:
+                logging.error(f"Error terminating PyAudio: {e}")
         logging.info("Host audio sending thread finished.")
 
 
 def launch_host_threads(host='127.0.0.1', video_port=12345, audio_port=12346,
                         master_tk_root=None, on_stream_end_callback=None):
     """Connects to server, sends HOST intent, and launches stream threads."""
-    global _on_stream_end_callback, _mic_muted
+    global _on_stream_end_callback, _mic_muted, _camera_blocked
     _on_stream_end_callback = on_stream_end_callback
     _mic_muted = False # Reset mute state on launch
+    _camera_blocked = False # Reset camera blocked state on launch
 
     if not LIBS_AVAILABLE:
         return False, "Required libraries (cv2, pyaudio) missing.", None
