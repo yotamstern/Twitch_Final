@@ -1,0 +1,216 @@
+[2025-04-14 16:51:01,982] INFO: [VIEWER] Instance ID: 5c2f31d5-2387-4244-9d4b-42b1f9193985
+[2025-04-14 16:51:01,985] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-14 16:51:01,985] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-14 16:51:01,985] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-14 16:51:01,985] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-14 16:51:01,986] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-15 12:14:34,749] INFO: [VIEWER] Instance ID: e00d2d91-b34b-4470-ac23-e1dbf1d739d4
+[2025-04-15 12:14:34,750] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-15 12:14:34,751] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-15 12:14:34,751] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-15 12:14:34,751] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-15 12:14:34,752] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-15 12:14:47,912] ERROR: [VIEWER] Unexpected error receiving/displaying video: [WinError 10053] An established connection was aborted by the software in your host machine
+Traceback (most recent call last):
+  File "C:\Users\user\PycharmProjects\twitch\viewer_client.py", line 40, in receive_and_display_video
+    packet_size, data_payload = receive_data(video_socket)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\PycharmProjects\twitch\protocol_recv.py", line 9, in receive_data
+    size += client_socket.recv(4 - len(size))
+            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+[2025-04-15 12:14:47,934] INFO: [VIEWER] Video display thread finished.
+[2025-04-15 12:14:53,637] ERROR: [VIEWER] Audio connection error: [WinError 10054] An existing connection was forcibly closed by the remote host
+[2025-04-15 12:14:53,637] INFO: [VIEWER] Audio receiving thread finished.
+[2025-04-15 12:14:53,637] INFO: [VIEWER] Viewer client finished.
+[2025-04-16 14:28:05,638] INFO: [VIEWER] Instance ID: d6ee89f6-4f42-4f66-8417-951fa4ffc698
+[2025-04-16 14:28:05,639] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:28:05,639] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:28:05,639] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:28:05,639] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:28:05,641] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:31:40,274] INFO: [VIEWER] Instance ID: bfb105aa-9983-4243-b695-6c63f2378f2d
+[2025-04-16 14:31:40,275] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:31:40,275] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:31:40,276] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:31:40,276] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:31:40,276] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:34:33,943] INFO: [VIEWER] Instance ID: 4de8cd74-51da-4b82-aa5a-6cd02bd400b6
+[2025-04-16 14:34:33,943] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:34:33,943] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:34:33,944] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:34:33,944] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:34:33,944] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:35:23,168] INFO: [VIEWER] Instance ID: 3802d553-c51c-45ce-8a7b-8c11ca360642
+[2025-04-16 14:35:23,169] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:35:23,169] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:35:23,169] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:35:23,169] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:35:23,170] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:35:34,966] INFO: [VIEWER] Instance ID: e03020ca-b980-4db5-87bd-9690cf2a33a5
+[2025-04-16 14:35:34,967] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:35:34,967] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:35:34,968] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:35:34,968] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:35:34,968] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:35:35,069] INFO: [VIEWER] Instance ID: 30389fd6-881d-4698-bd3d-57a4ad61594e
+[2025-04-16 14:35:35,070] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:35:35,070] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:35:35,070] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:35:35,070] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:35:35,071] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:35:53,251] INFO: [VIEWER] Instance ID: 3ba85aee-c0e8-42ab-a623-1169e189c9dc
+[2025-04-16 14:35:53,252] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:35:53,252] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:35:53,252] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:35:53,252] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:35:53,253] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:35:53,349] INFO: [VIEWER] Instance ID: 6cb1c10a-f31e-47d6-9ca4-01ef6a649d9e
+[2025-04-16 14:35:53,350] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:35:53,350] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:35:53,350] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:35:53,350] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:35:53,351] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:03,072] INFO: [VIEWER] Instance ID: 487e97b4-1dbc-48f0-9e7f-750d753fa2a4
+[2025-04-16 14:36:03,073] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:36:03,073] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:36:03,073] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:36:03,073] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:36:03,074] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:03,149] INFO: [VIEWER] Instance ID: 1b49e1bd-cf0d-45f2-9b55-1efbe0db2d17
+[2025-04-16 14:36:03,149] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:36:03,150] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:36:03,150] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:36:03,150] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:36:03,151] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:05,606] INFO: [VIEWER] Instance ID: f93d8223-d936-4d86-b780-6c84e91b3cd9
+[2025-04-16 14:36:05,607] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:36:05,607] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:36:05,607] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:36:05,607] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:36:05,608] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:05,721] INFO: [VIEWER] Instance ID: 11702d08-3abe-4a03-9dca-79085fcd02a9
+[2025-04-16 14:36:05,722] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:36:05,722] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:36:05,723] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:36:05,723] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:36:05,724] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:06,442] INFO: [VIEWER] Instance ID: 16129a9d-3699-43fc-9ee3-397597790d61
+[2025-04-16 14:36:06,442] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:36:06,443] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:36:06,443] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:36:06,443] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:36:06,443] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:06,516] INFO: [VIEWER] Instance ID: 7dbe462e-92d1-4544-9e85-cc163fbfbcec
+[2025-04-16 14:36:06,518] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:36:06,518] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:36:06,518] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:36:06,518] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:36:06,519] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:36:13,614] INFO: [VIEWER] Instance ID: 228827f3-a13e-4985-93b6-c3167fa8e21d
+[2025-04-16 14:36:15,644] ERROR: [VIEWER] Connection Error: [WinError 10061] No connection could be made because the target machine actively refused it
+[2025-04-16 14:36:15,645] INFO: [VIEWER] Viewer client finished.
+[2025-04-16 14:38:10,946] INFO: [VIEWER] Instance ID: 62aa7a4e-95a6-4c1d-b49c-fbb7724a51a0
+[2025-04-16 14:38:10,947] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:38:10,947] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:38:10,947] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:38:10,947] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:38:10,949] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:44:55,849] INFO: [VIEWER] Instance ID: 795ba9b9-0b36-4186-b75e-8e47b0ada40e
+[2025-04-16 14:44:55,850] INFO: [VIEWER] Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:44:55,850] INFO: [VIEWER] Sent client ID via video socket
+[2025-04-16 14:44:55,851] INFO: [VIEWER] Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:44:55,851] INFO: [VIEWER] Sent client ID via audio socket
+[2025-04-16 14:44:55,851] INFO: [VIEWER] Audio receiving thread started (currently discarding data).
+[2025-04-16 14:56:04,754] INFO (MainThread): Viewer Instance ID: 093198e3-eeba-4543-8009-4b5c1debd7a1
+[2025-04-16 14:56:04,755] INFO (MainThread): Connected to video server at 127.0.0.1:12345
+[2025-04-16 14:56:04,755] INFO (MainThread): Sent client ID via video socket
+[2025-04-16 14:56:04,755] INFO (MainThread): Connected to audio server at 127.0.0.1:12346
+[2025-04-16 14:56:04,755] INFO (MainThread): Sent client ID via audio socket
+[2025-04-16 14:56:04,755] INFO (VideoThread): Video display thread started.
+[2025-04-16 14:56:04,937] INFO (AudioThread): Audio receiving and playback thread started.
+[2025-04-16 15:00:07,643] INFO (MainThread): Viewer client shutting down...
+[2025-04-16 15:00:07,643] INFO (MainThread): Video socket closed.
+[2025-04-16 15:00:07,644] INFO (MainThread): Audio socket closed.
+[2025-04-16 15:00:07,647] ERROR (VideoThread): Unexpected error receiving/displaying video: [WinError 10038] An operation was attempted on something that is not a socket
+Traceback (most recent call last):
+  File "C:\Users\user\PycharmProjects\twitch\viewer_client.py", line 52, in receive_and_display_video
+    packet_size, data_payload = receive_data(video_socket)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\PycharmProjects\twitch\protocol_recv.py", line 9, in receive_data
+    size += client_socket.recv(4 - len(size))
+            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+OSError: [WinError 10038] An operation was attempted on something that is not a socket
+[2025-04-16 15:00:07,659] INFO (VideoThread): Video display thread finished.
+[2025-04-16 15:00:07,701] ERROR (AudioThread): Unexpected error receiving audio: [WinError 10038] An operation was attempted on something that is not a socket
+Traceback (most recent call last):
+  File "C:\Users\user\PycharmProjects\twitch\viewer_client.py", line 110, in receive_and_play_audio
+    packet_size, data_payload = receive_data(audio_socket)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\PycharmProjects\twitch\protocol_recv.py", line 9, in receive_data
+    size += client_socket.recv(4 - len(size))
+            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+OSError: [WinError 10038] An operation was attempted on something that is not a socket
+[2025-04-16 15:00:07,702] INFO (AudioThread): Audio receiving thread finishing.
+[2025-04-16 15:00:07,885] INFO (AudioThread): PyAudio stream closed.
+[2025-04-16 15:00:07,893] INFO (AudioThread): PyAudio terminated.
+[2025-04-16 15:00:07,894] INFO (MainThread): Viewer client finished.
+[2025-04-16 15:05:37,882] INFO (MainThread): Viewer Instance ID: 321d1552-901f-469e-abcf-c7b0515576b9
+[2025-04-16 15:05:37,883] INFO (MainThread): Connected to video server at 127.0.0.1:12345
+[2025-04-16 15:05:37,883] INFO (MainThread): Sent client ID via video socket
+[2025-04-16 15:05:37,883] INFO (MainThread): Connected to audio server at 127.0.0.1:12346
+[2025-04-16 15:05:37,884] INFO (MainThread): Sent client ID via audio socket
+[2025-04-16 15:05:37,884] INFO (VideoThread): Video display thread started.
+[2025-04-16 15:05:38,090] INFO (AudioThread): Audio receiving and playback thread started.
+[2025-04-16 15:05:39,118] INFO (VideoThread): Quit key ('q') pressed in video window.
+[2025-04-16 15:05:39,128] INFO (VideoThread): Video display thread finished.
+[2025-04-16 15:05:39,387] INFO (MainThread): One or both receiving threads have finished.
+[2025-04-16 15:05:39,387] INFO (MainThread): Viewer client shutting down...
+[2025-04-16 15:05:39,387] INFO (MainThread): Video socket closed.
+[2025-04-16 15:05:39,387] INFO (MainThread): Audio socket closed.
+[2025-04-16 15:05:39,453] ERROR (AudioThread): Unexpected error receiving audio: [WinError 10038] An operation was attempted on something that is not a socket
+Traceback (most recent call last):
+  File "C:\Users\user\PycharmProjects\twitch\viewer_client.py", line 104, in receive_and_play_audio
+    packet_size, data_payload = receive_data(audio_socket)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\PycharmProjects\twitch\protocol_recv.py", line 9, in receive_data
+    size += client_socket.recv(4 - len(size))
+            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+OSError: [WinError 10038] An operation was attempted on something that is not a socket
+[2025-04-16 15:05:39,459] INFO (AudioThread): Audio receiving thread finishing.
+[2025-04-16 15:05:39,636] INFO (AudioThread): PyAudio stream closed.
+[2025-04-16 15:05:39,637] INFO (AudioThread): PyAudio terminated.
+[2025-04-16 15:05:39,637] INFO (MainThread): Viewer client finished.
+[2025-04-16 15:33:31,318] INFO (MainThread): Viewer Instance ID: 1c05e36d-6a05-47d7-a66e-876987be9ec6
+[2025-04-16 15:33:31,318] INFO (MainThread): Connected to video server at 127.0.0.1:12345
+[2025-04-16 15:33:31,319] INFO (MainThread): Sent client ID via video socket
+[2025-04-16 15:33:31,319] INFO (MainThread): Connected to audio server at 127.0.0.1:12346
+[2025-04-16 15:33:31,319] INFO (MainThread): Sent client ID via audio socket
+[2025-04-16 15:33:31,319] INFO (VideoThread): Video display thread started.
+[2025-04-16 15:33:31,882] INFO (AudioThread): Audio receiving and playback thread started.
+[2025-04-16 15:33:38,721] INFO (MainThread): Viewer client shutting down...
+[2025-04-16 15:33:38,722] INFO (MainThread): Video socket closed.
+[2025-04-16 15:33:38,722] ERROR (VideoThread): Unexpected error receiving/displaying video: [WinError 10038] An operation was attempted on something that is not a socket
+Traceback (most recent call last):
+  File "C:\Users\user\PycharmProjects\twitch\viewer_client.py", line 46, in receive_and_display_video
+    packet_size, data_payload = receive_data(video_socket)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\PycharmProjects\twitch\protocol_recv.py", line 9, in receive_data
+    size += client_socket.recv(4 - len(size))
+            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+OSError: [WinError 10038] An operation was attempted on something that is not a socket
+[2025-04-16 15:33:38,722] INFO (MainThread): Audio socket closed.
+[2025-04-16 15:33:38,722] ERROR (AudioThread): Unexpected error receiving audio: [WinError 10038] An operation was attempted on something that is not a socket
+Traceback (most recent call last):
+  File "C:\Users\user\PycharmProjects\twitch\viewer_client.py", line 104, in receive_and_play_audio
+    packet_size, data_payload = receive_data(audio_socket)
+                                ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\PycharmProjects\twitch\protocol_recv.py", line 9, in receive_data
+    size += client_socket.recv(4 - len(size))
+            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+OSError: [WinError 10038] An operation was attempted on something that is not a socket
+[2025-04-16 15:33:38,728] INFO (AudioThread): Audio receiving thread finishing.
+[2025-04-16 15:33:38,732] INFO (AudioThread): PyAudio stream closed.
+[2025-04-16 15:33:38,733] INFO (AudioThread): PyAudio terminated.
+[2025-04-16 15:33:38,734] INFO (VideoThread): Video display thread finished.
+[2025-04-16 15:33:38,735] INFO (MainThread): Viewer client finished.

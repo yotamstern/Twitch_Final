@@ -1,0 +1,35 @@
+[2025-05-19 01:17:28,027] INFO (MainThread) GUI: Main screen displayed.
+[2025-05-19 01:17:28,028] INFO (MainThread) GUI: GUI setup complete. Starting main loop.
+[2025-05-19 01:17:29,284] INFO (MainThread) GUI: Login screen displayed.
+[2025-05-19 01:17:34,646] INFO (MainThread) GUI: Attempting login for user: yotam
+[2025-05-19 01:17:34,891] INFO (MainThread) GUI: User 'yotam' logged in successfully.
+[2025-05-19 01:17:34,891] INFO (MainThread) GUI: Login successful for yotam.
+[2025-05-19 01:17:36,181] INFO (MainThread) GUI: Dashboard displayed for user 'yotam'.
+[2025-05-19 01:17:51,302] INFO (MainThread) GUI: User 'yotam' attempting to start host streaming with title 'yotam's Awesome Stream'.
+[2025-05-19 01:18:00,436] INFO (MainThread) GUI: Main screen displayed.
+[2025-05-19 01:18:00,436] INFO (MainThread) GUI: GUI setup complete. Starting main loop.
+[2025-05-19 01:18:01,319] INFO (HostStreamSetupThread) GUI: Callback: Host-initiated stream exit for stream 'N/A'.
+[2025-05-19 01:18:01,344] ERROR (MainThread) GUI: Failed to start host stream. Reason: Failed to connect/confirm: Host: Server HOST_OK confirmation timeout
+[2025-05-19 01:18:01,670] INFO (MainThread) GUI: Login screen displayed.
+[2025-05-19 01:18:10,294] INFO (MainThread) GUI: Attempting login for user: udi
+[2025-05-19 01:18:10,531] INFO (MainThread) GUI: User 'udi' logged in successfully.
+[2025-05-19 01:18:10,531] INFO (MainThread) GUI: Login successful for udi.
+[2025-05-19 01:18:12,897] INFO (MainThread) GUI: Dashboard displayed for user 'udi'.
+[2025-05-19 01:18:21,516] INFO (MainThread) GUI: GUI state updated: No longer hosting stream 'None'.
+[2025-05-19 01:18:22,867] INFO (MainThread) GUI: User 'yotam' attempting to start host streaming with title 'yotam's Awesome Stream'.
+[2025-05-19 01:18:32,876] INFO (HostStreamSetupThread) GUI: Callback: Host-initiated stream exit for stream 'N/A'.
+[2025-05-19 01:18:32,880] ERROR (MainThread) GUI: Failed to start host stream. Reason: Failed to connect/confirm: Host: Server HOST_OK confirmation timeout
+[2025-05-19 01:19:01,007] INFO (MainThread) GUI: Application close requested by user (WM_DELETE_WINDOW).
+[2025-05-19 01:19:01,008] INFO (MainThread) GUI: Proceeding with application shutdown.
+[2025-05-19 01:19:01,022] INFO (MainThread) GUI: Tkinter root window destroyed.
+[2025-05-19 01:19:01,022] INFO (MainThread) GUI: Tkinter main loop has finished.
+[2025-05-19 01:19:01,022] INFO (MainThread) GUI: Application exited.
+[2025-05-19 01:19:05,100] INFO (MainThread) GUI: GUI state updated: No longer hosting stream 'None'.
+[2025-05-19 01:19:06,110] INFO (MainThread) GUI: User 'yotam' initiating logout.
+[2025-05-19 01:19:09,366] INFO (MainThread) GUI: Signup screen displayed.
+[2025-05-19 01:19:24,335] INFO (MainThread) GUI: Login screen displayed.
+[2025-05-19 01:19:25,360] INFO (MainThread) GUI: Application close requested by user (WM_DELETE_WINDOW).
+[2025-05-19 01:19:25,360] INFO (MainThread) GUI: Proceeding with application shutdown.
+[2025-05-19 01:19:25,386] INFO (MainThread) GUI: Tkinter root window destroyed.
+[2025-05-19 01:19:25,386] INFO (MainThread) GUI: Tkinter main loop has finished.
+[2025-05-19 01:19:25,386] INFO (MainThread) GUI: Application exited.
